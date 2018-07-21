@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import TopMenu from "./components/TopMenu";
-import "./App.css";
-import LoginForm from "./components/Login";
-import { Provider, Consumer } from "./AppContext";
-import FormPage from "./components/FormPage";
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import TopMenu from './components/TopMenu'
+import LoginForm from './components/Login'
+import { Provider, Consumer } from './AppContext'
+import FormPage from './components/FormPage'
 
 class App extends Component {
   render() {
@@ -25,8 +24,8 @@ class App extends Component {
           </div>
         </Router>
       </Provider>
-    );
+    )
   }
 }
 
-export default App;
+export default App

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import {
   Button,
   Form,
@@ -6,18 +6,18 @@ import {
   Header,
   Segment,
   Container
-} from "semantic-ui-react";
+} from 'semantic-ui-react'
 
 export default class Login extends Component {
   state = {
-    username: "",
-    password: ""
-  };
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    username: '',
+    password: ''
+  }
+  handleChange = (e, { name, value }) => this.setState({ [name]: value })
   handleSubmit = () => {
-    const { username, password } = this.state;
-    this.props.login({ username: `baltimore\\${username}`, password });
-  };
+    const { username, password } = this.state
+    this.props.login({ username: `baltimore\\${username}`, password })
+  }
   render() {
     return (
       <Container className="login-form">
@@ -30,7 +30,7 @@ export default class Login extends Component {
     `}</style>
         <Grid
           textAlign="center"
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
@@ -65,6 +65,6 @@ export default class Login extends Component {
           </Grid.Column>
         </Grid>
       </Container>
-    );
+    )
   }
 }

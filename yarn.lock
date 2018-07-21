@@ -15,6 +15,10 @@
   dependencies:
     tslib "^1.7.1"
 
+"@esri/arcgis-rest-common-types@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-common-types/-/arcgis-rest-common-types-1.5.1.tgz#978617c2adadb16c360226fa38c9bb893973107d"
+
 "@esri/arcgis-rest-request@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-request/-/arcgis-rest-request-1.5.1.tgz#164a470605892fd0f4deb422849323fe9348778c"
