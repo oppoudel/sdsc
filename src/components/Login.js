@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import {
   Button,
   Form,
@@ -14,11 +15,16 @@ export default class Login extends Component {
     password: ''
   }
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
-  handleSubmit = () => {
+  handleSubmit = e => {
+    e.preventDefault()
     const { username, password } = this.state
     this.props.login({ username: `baltimore\\${username}`, password })
   }
   render() {
+    const { isAuthenticated } = this.props
+    if (isAuthenticated === true) {
+      return <Redirect to="/" />
+    }
     return (
       <Container className="login-form">
         <style>{`
