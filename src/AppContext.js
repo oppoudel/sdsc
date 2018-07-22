@@ -6,22 +6,23 @@ const AppContext = React.createContext()
 export class Provider extends Component {
   login = data => {
     generateToken(tokenUrl, data)
-      .catch(error => this.setState({ error }))
+      .catch(error => this.setState({ error: error.originalMessage }))
       .then(response => {
         if (response) {
           localStorage.setItem('bpdToken', JSON.stringify(response))
-          this.setState({ isAuthenticated: true })
+          this.setState({ isAuthenticated: true, error: '' })
         }
       })
   }
   logout = () => {
     localStorage.removeItem('bpdToken')
-    this.setState({ isAuthenticated: false })
+    this.setState({ isAuthenticated: false, error: '' })
   }
   state = {
-    isAuthenticated: false,
+    isAuthenticated: true,
     error: '',
-    login: this.login
+    login: this.login,
+    logout: this.logout
   }
   async componentDidMount() {}
   render() {

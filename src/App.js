@@ -28,15 +28,20 @@ class App extends Component {
       <Provider>
         <Router>
           <div>
-            <TopMenu />
+            <Consumer>
+              {({ logout, isAuthenticated }) => (
+                <TopMenu logout={logout} isAuthenticated={isAuthenticated} />
+              )}
+            </Consumer>
             <Route
               path="/login"
               render={() => (
                 <Consumer>
-                  {({ login, isAuthenticated }) => (
+                  {({ login, isAuthenticated, error }) => (
                     <LoginForm
                       login={login}
                       isAuthenticated={isAuthenticated}
+                      error={error}
                     />
                   )}
                 </Consumer>

@@ -6,7 +6,8 @@ import {
   Grid,
   Header,
   Segment,
-  Container
+  Container,
+  Message
 } from 'semantic-ui-react'
 
 export default class Login extends Component {
@@ -21,7 +22,7 @@ export default class Login extends Component {
     this.props.login({ username: `baltimore\\${username}`, password })
   }
   render() {
-    const { isAuthenticated } = this.props
+    const { isAuthenticated, error } = this.props
     if (isAuthenticated === true) {
       return <Redirect to="/" />
     }
@@ -68,6 +69,7 @@ export default class Login extends Component {
                 </Button>
               </Segment>
             </Form>
+            {error.length > 0 ? <Message negative>{error}</Message> : null}
           </Grid.Column>
         </Grid>
       </Container>

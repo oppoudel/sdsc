@@ -1,13 +1,17 @@
 import { loadModules } from 'esri-loader'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Header, Card } from 'semantic-ui-react'
 import { getGeolocation, addPoint } from './utils'
 import { bpdApp } from './mapConfig'
 
 const styles = {
+  header: {
+    marginTop: '3em'
+  },
   mapDiv: {
     height: '300px',
     width: '100',
-    marginTop: '4em',
+    marginTop: '1em',
     position: 'relative'
   }
 }
@@ -58,6 +62,15 @@ export default class EsriMap extends Component {
   }
 
   render() {
-    return <div style={styles.mapDiv} ref={this.viewdivRef} />
+    return (
+      <Fragment>
+        <Header as="h2" style={styles.header}>
+          Location Details
+        </Header>
+        <Card fluid>
+          <div style={styles.mapDiv} ref={this.viewdivRef} />
+        </Card>
+      </Fragment>
+    )
   }
 }
