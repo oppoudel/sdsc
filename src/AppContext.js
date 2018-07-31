@@ -19,7 +19,7 @@ export class Provider extends Component {
     this.setState({ isAuthenticated: false, error: "" });
   };
   state = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     error: "",
     login: this.login,
     logout: this.logout

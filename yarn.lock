@@ -80,6 +80,12 @@
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-common-types/-/arcgis-rest-common-types-1.5.1.tgz#978617c2adadb16c360226fa38c9bb893973107d"
 
+"@esri/arcgis-rest-feature-service@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-feature-service/-/arcgis-rest-feature-service-1.6.0.tgz#488baa9eb59619020464f0c9483faee0b2f5bbd3"
+  dependencies:
+    tslib "^1.7.1"
+
 "@esri/arcgis-rest-geocoder@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-geocoder/-/arcgis-rest-geocoder-1.5.1.tgz#5b0a919a309fff7ae4e5c961096970ea12982591"

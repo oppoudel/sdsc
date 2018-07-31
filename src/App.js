@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import TopMenu from './components/TopMenu'
-import LoginForm from './components/Login'
-import { Provider, Consumer } from './AppContext'
-import FormPage from './components/FormPage'
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import TopMenu from "./components/TopMenu";
+import LoginForm from "./pages/LoginPage";
+import { Provider, Consumer } from "./AppContext";
+import FormPage from "./pages/FormPage";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       </Consumer>
     )}
   />
-)
+);
 
 class App extends Component {
   render() {
@@ -51,8 +51,8 @@ class App extends Component {
           </div>
         </Router>
       </Provider>
-    )
+    );
   }
 }
 
-export default App
+export default App;

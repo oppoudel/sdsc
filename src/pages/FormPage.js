@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Header } from "semantic-ui-react";
-import Search from "./SearchAddress/Search";
-import EsriMap from "./Map/EsriMap";
+import Search from "../components/SearchAddress/Search";
+import EsriMap from "../components/Map/EsriMap";
+import InputForm from "../components/InputForm";
 
 const styles = {
   header: {
@@ -17,6 +18,7 @@ export default () => {
       </Header>
       <Search />
       <EsriMap />
+      <InputForm />
     </Container>
   );
 };
