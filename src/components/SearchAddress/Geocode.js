@@ -1,7 +1,7 @@
-import React from "react";
-import debounce from "debounce-fn";
-import isEqual from "react-fast-compare";
-import { geocode } from "@esri/arcgis-rest-geocoder";
+import React from 'react';
+import debounce from 'lodash.debounce';
+import isEqual from 'react-fast-compare';
+import { suggest } from '@esri/arcgis-rest-geocoder';
 
 class Geocode extends React.Component {
   state = {
@@ -23,10 +23,12 @@ class Geocode extends React.Component {
 
   makeNetworkRequest = debounce(() => {
     const { address } = this.props;
-    geocode(`${address}, Baltimore, MD`)
+    suggest(address, {
+      params: { location: [-76.6162, 39.3043], maxSuggestions: 10 }
+    })
       .then(res => {
         this.setState({
-          data: res.candidates,
+          data: res.suggestions,
           loading: false,
           error: false
         });
@@ -39,7 +41,6 @@ class Geocode extends React.Component {
 
   fetchData = () => {
     this.setState({ error: false, loading: true });
-
     this.makeNetworkRequest();
   };
 

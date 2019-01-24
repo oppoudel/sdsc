@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import Downshift from "downshift";
-import matchSorter from "match-sorter";
+import React, { Component } from 'react';
+import Downshift from 'downshift';
+import matchSorter from 'match-sorter';
+import { geocode } from '@esri/arcgis-rest-geocoder';
 import {
   Label,
   Menu,
@@ -10,28 +11,34 @@ import {
   ArrowIcon,
   XIcon,
   css
-} from "./Shared";
-import Geocode from "./Geocode";
-import { addPoint } from "../Map/utils";
+} from './Styles';
+import Geocode from './Geocode';
+import { addPoint } from '../Map/utils';
 
 export default class Search extends Component {
   handleStateChange = ({ selectedItem }) => {
     if (selectedItem) {
-      const { x, y } = selectedItem.location;
-      addPoint(x, y);
+      const { magicKey } = selectedItem;
+      geocode({ params: { magicKey, maxLocations: 10 } }).then(res => {
+        //console.log(res.candidates);
+        //alert(res.candidates[0].address);
+        const { x, y } = res.candidates[0].location;
+        addPoint(x, y);
+        this.props.updateXY(x, y);
+      });
     }
   };
   getItems(allItems, filter) {
     return filter
       ? matchSorter(allItems, filter, {
-          keys: ["address"]
+          keys: ['text']
         })
       : allItems;
   }
   render() {
     return (
       <Downshift
-        itemToString={item => (item ? item.address : "")}
+        itemToString={item => (item ? item.text : '')}
         onStateChange={this.handleStateChange}
       >
         {({
@@ -46,12 +53,12 @@ export default class Search extends Component {
           getToggleButtonProps,
           getMenuProps
         }) => (
-          <div {...css({ width: "50%" })}>
+          <div {...css({ width: '100%' })}>
             <Label {...getLabelProps()}>Search Address</Label>
-            <div {...css({ position: "relative" })}>
+            <div {...css({ position: 'relative' })}>
               <Input
                 {...getInputProps({
-                  placeholder: "Search Address",
+                  placeholder: 'Search Address',
                   onChange: this.inputOnChange
                 })}
               />
@@ -68,7 +75,7 @@ export default class Search extends Component {
                 </ControllerButton>
               )}
             </div>
-            <div {...css({ position: "relative", zIndex: 1000 })}>
+            <div {...css({ position: 'relative', zIndex: 1000 })}>
               <Menu {...getMenuProps({ isOpen })}>
                 {(() => {
                   if (!isOpen) {
@@ -107,7 +114,7 @@ export default class Search extends Component {
                                 isSelected: selectedItem === item
                               })}
                             >
-                              {item.address}
+                              {item.text}
                             </Item>
                           )
                         );
