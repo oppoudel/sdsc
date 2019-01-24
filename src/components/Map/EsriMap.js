@@ -1,14 +1,14 @@
-import { loadModules } from "esri-loader";
-import React, { Component } from "react";
-import { Card } from "semantic-ui-react";
-import { getGeolocation, addPoint } from "./utils";
-import { bpdApp } from "./mapConfig";
+import { loadModules } from 'esri-loader';
+import React, { Component } from 'react';
+import { Card } from 'semantic-ui-react';
+import { getGeolocation, addPoint } from './utils';
+import { bpdApp } from './mapConfig';
 
 const styles = {
   mapDiv: {
-    height: "300px",
-    width: "100",
-    position: "relative"
+    height: '300px',
+    width: '100',
+    position: 'relative'
   }
 };
 
@@ -28,11 +28,11 @@ export default class EsriMap extends Component {
       esriMap: { zoom, center }
     } = this.state;
 
-    loadModules(["esri/views/MapView", "esri/Map"]).then(([MapView, Map]) => {
+    loadModules(['esri/views/MapView', 'esri/Map']).then(([MapView, Map]) => {
       let webmap, view;
       if (!bpdApp.esriMap) {
         webmap = new Map({
-          basemap: "topo-vector"
+          basemap: 'topo-vector'
         });
         bpdApp.esriMap = webmap;
       } else {
@@ -49,7 +49,12 @@ export default class EsriMap extends Component {
       } else {
         view = bpdApp.mapView;
       }
-      view.when(() => getGeolocation(cords => addPoint(...cords)));
+      view.when(() =>
+        getGeolocation(cords => {
+          addPoint(...cords);
+          this.props.updateXY(...cords);
+        })
+      );
     });
   }
   componentWillUnmount = () => {

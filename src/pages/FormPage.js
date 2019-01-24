@@ -1,12 +1,13 @@
-import React from "react";
-import { Container, Header } from "semantic-ui-react";
-import Search from "../components/SearchAddress/Search";
-import EsriMap from "../components/Map/EsriMap";
-import InputForm from "../components/InputForm";
+import React from 'react';
+import { Container, Header } from 'semantic-ui-react';
+import { Consumer } from '../AppContext';
+import Search from '../components/SearchAddress/Search';
+import EsriMap from '../components/Map/EsriMap';
+import LocationDetails from '../components/LocationDetails';
 
 const styles = {
   header: {
-    marginTop: "3em"
+    marginTop: '3em'
   }
 };
 
@@ -16,9 +17,15 @@ export default () => {
       <Header as="h2" style={styles.header}>
         Location Details
       </Header>
-      <Search />
-      <EsriMap />
-      <InputForm />
+      <Consumer>
+        {({ onXYupdate, x, y }) => (
+          <div>
+            <Search updateXY={onXYupdate} />
+            <EsriMap updateXY={onXYupdate} />
+            <LocationDetails x={x} y={y} />
+          </div>
+        )}
+      </Consumer>
     </Container>
   );
 };
