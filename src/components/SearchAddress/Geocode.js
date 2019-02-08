@@ -1,60 +1,48 @@
-import React from 'react';
-import debounce from 'lodash.debounce';
-import isEqual from 'react-fast-compare';
-import { suggest } from '@esri/arcgis-rest-geocoder';
+import { suggest } from "@esri/arcgis-rest-geocoder";
+import debounce from "lodash.debounce";
+import { useEffect, useState } from "react";
 
-class Geocode extends React.Component {
-  state = {
+function Geocode({ address, children }) {
+  const [state, setState] = useState({
     data: undefined,
     loading: false,
     error: false
-  };
+  });
 
-  componentDidMount() {
-    this.fetchData();
-  }
+  useEffect(() => {
+    fetchData();
+  }, [address]);
 
-  componentDidUpdate({ children: _, ...prevProps }) {
-    const { children, ...props } = this.props;
-    if (!isEqual(prevProps, props)) {
-      this.fetchData();
-    }
-  }
-
-  makeNetworkRequest = debounce(() => {
-    const { address } = this.props;
+  const makeNetworkRequest = debounce(() => {
     suggest(address, {
       params: { location: [-76.6162, 39.3043], maxSuggestions: 10 }
     })
       .then(res => {
-        this.setState({
+        setState({
+          ...state,
           data: res.suggestions,
           loading: false,
           error: false
         });
       })
       .catch(e => {
-        this.setState({ data: undefined, error: e.message, loading: false });
+        setState({ ...state, data: undefined, error: e.message });
         console.error(e);
       });
   });
 
-  fetchData = () => {
-    this.setState({ error: false, loading: true });
-    this.makeNetworkRequest();
+  const fetchData = () => {
+    setState({ ...state, loading: true, error: false });
+    makeNetworkRequest();
   };
 
-  render() {
-    const { children } = this.props;
-    const { data, loading, error } = this.state;
-
-    return children({
-      data,
-      loading,
-      error,
-      refetch: this.fetchData
-    });
-  }
+  const { data, loading, error } = state;
+  return children({
+    data,
+    loading,
+    error,
+    refetch: fetchData
+  });
 }
 
 export default Geocode;

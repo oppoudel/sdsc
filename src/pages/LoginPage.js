@@ -1,78 +1,87 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useContext, useState } from "react";
+import { Redirect } from "react-router-dom";
 import {
   Button,
+  Container,
   Form,
   Grid,
   Header,
-  Segment,
-  Container,
-  Message
-} from 'semantic-ui-react'
+  Message,
+  Segment
+} from "semantic-ui-react";
+import AppContext from "../AppContext";
 
-export default class Login extends Component {
-  state = {
-    username: '',
-    password: ''
+function useFormInput(initialValue) {
+  const [value, setValue] = useState(initialValue);
+  function handleChange(e) {
+    setValue(e.target.value);
   }
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
-  handleSubmit = e => {
-    e.preventDefault()
-    const { username, password } = this.state
-    this.props.login({ username: `baltimore\\${username}`, password })
+  return {
+    value,
+    onChange: handleChange
+  };
+}
+
+export default function Login() {
+  const { isAuthenticated, login, error } = useContext(AppContext);
+  const username = useFormInput("");
+  const password = useFormInput("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    login({
+      username: `baltimore\\${username.value}`,
+      password: password.value
+    });
+  };
+
+  if (isAuthenticated === true) {
+    return <Redirect to="/" />;
   }
-  render() {
-    const { isAuthenticated, error } = this.props
-    if (isAuthenticated === true) {
-      return <Redirect to="/" />
-    }
-    return (
-      <Container className="login-form">
-        <style>{`
+  return (
+    <Container className="login-form">
+      <style>{`
       body > div,
       body > div > div,
       body > div > div > div.login-form {
         height: 100%;
       }
     `}</style>
-        <Grid
-          textAlign="center"
-          style={{ height: '100%' }}
-          verticalAlign="middle"
-        >
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              Log-in to your account
-            </Header>
-            <Form size="large" onSubmit={this.handleSubmit}>
-              <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Username"
-                  name="username"
-                  onChange={this.handleChange}
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  type="password"
-                  name="password"
-                  onChange={this.handleChange}
-                />
+      <Grid
+        textAlign="center"
+        style={{ height: "100%" }}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" color="teal" textAlign="center">
+            Log-in to your account
+          </Header>
+          <Form size="large" onSubmit={handleSubmit}>
+            <Segment stacked>
+              <Form.Input
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="Username"
+                {...username}
+              />
+              <Form.Input
+                fluid
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                {...password}
+              />
 
-                <Button color="teal" fluid size="large" type="submit">
-                  Login
-                </Button>
-              </Segment>
-            </Form>
-            {error.length > 0 ? <Message negative>{error}</Message> : null}
-          </Grid.Column>
-        </Grid>
-      </Container>
-    )
-  }
+              <Button color="teal" fluid size="large" type="submit">
+                Login
+              </Button>
+            </Segment>
+          </Form>
+          {error.length > 0 ? <Message negative>{error}</Message> : null}
+        </Grid.Column>
+      </Grid>
+    </Container>
+  );
 }

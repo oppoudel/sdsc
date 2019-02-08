@@ -1,43 +1,44 @@
-import React, { Component } from 'react';
-import { generateToken } from '@esri/arcgis-rest-auth';
-import { tokenUrl } from './config';
+import { generateToken } from "@esri/arcgis-rest-auth";
+import React, { useState } from "react";
+import { tokenUrl } from "./config";
 const AppContext = React.createContext();
 
-export class Provider extends Component {
-  onXYupdate = (x, y) => {
-    this.setState({ x, y });
-  };
-  login = data => {
+export function Provider(props) {
+  const [location, setLocation] = useState({});
+  function onXYupdate(x, y) {
+    setLocation({ x, y });
+  }
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState("");
+  function login(data) {
     generateToken(tokenUrl, data)
-      .catch(error => this.setState({ error: error.originalMessage }))
+      .catch(error => setError(error.originalMessage))
       .then(response => {
         if (response) {
-          localStorage.setItem('bpdToken', JSON.stringify(response));
-          this.setState({ isAuthenticated: true, error: '' });
+          localStorage.setItem("bpdToken", JSON.stringify(response));
+          setIsAuthenticated(true);
         }
       });
-  };
-  logout = () => {
-    localStorage.removeItem('bpdToken');
-    this.setState({ isAuthenticated: false, error: '' });
-  };
-  state = {
-    x: null,
-    y: null,
-    isAuthenticated: true,
-    error: '',
-    onXYupdate: this.onXYupdate,
-    login: this.login,
-    logout: this.logout
-  };
-  async componentDidMount() {}
-  render() {
-    return (
-      <AppContext.Provider value={this.state}>
-        {this.props.children}
-      </AppContext.Provider>
-    );
   }
+  function logout() {
+    localStorage.removeItem("bpdToken");
+    setIsAuthenticated(false);
+  }
+  const state = {
+    x: location.x,
+    y: location.y,
+    isAuthenticated,
+    error,
+    onXYupdate: onXYupdate,
+    login,
+    logout
+  };
+
+  return (
+    <AppContext.Provider value={state}>{props.children}</AppContext.Provider>
+  );
 }
 
 export const Consumer = AppContext.Consumer;
+export default AppContext;

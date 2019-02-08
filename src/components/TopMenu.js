@@ -1,8 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Menu, Container, Header, Button } from 'semantic-ui-react'
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Button, Container, Header, Menu } from "semantic-ui-react";
+import AppContext from "../AppContext";
 
-export default ({ logout, isAuthenticated }) => {
+export default () => {
+  const { logout, isAuthenticated } = useContext(AppContext);
   return (
     <Menu fixed="top">
       <Container>
@@ -27,5 +29,5 @@ export default ({ logout, isAuthenticated }) => {
         </Menu.Menu>
       </Container>
     </Menu>
-  )
-}
+  );
+};

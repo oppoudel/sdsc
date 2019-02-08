@@ -1,58 +1,38 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import AppContext, { Provider } from "./AppContext";
 import TopMenu from "./components/TopMenu";
-import LoginForm from "./pages/LoginPage";
-import { Provider, Consumer } from "./AppContext";
 import FormPage from "./pages/FormPage";
+import LoginPage from "./pages/LoginPage";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => (
-      <Consumer>
-        {({ isAuthenticated }) =>
-          isAuthenticated === true ? (
-            <Component {...props} />
-          ) : (
-            <Redirect to="/login" />
-          )
-        }
-      </Consumer>
-    )}
-  />
-);
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { isAuthenticated } = useContext(AppContext);
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isAuthenticated === true ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
 
-class App extends Component {
-  render() {
-    return (
-      <Provider>
-        <Router>
-          <div>
-            <Consumer>
-              {({ logout, isAuthenticated }) => (
-                <TopMenu logout={logout} isAuthenticated={isAuthenticated} />
-              )}
-            </Consumer>
-            <Route
-              path="/login"
-              render={() => (
-                <Consumer>
-                  {({ login, isAuthenticated, error }) => (
-                    <LoginForm
-                      login={login}
-                      isAuthenticated={isAuthenticated}
-                      error={error}
-                    />
-                  )}
-                </Consumer>
-              )}
-            />
-            <PrivateRoute exact path="/" component={FormPage} />
-          </div>
-        </Router>
-      </Provider>
-    );
-  }
+function App() {
+  return (
+    <Provider>
+      <Router>
+        <div>
+          <TopMenu />
+          <Route path="/login" render={() => <LoginPage />} />
+          <PrivateRoute exact path="/" component={FormPage} />
+        </div>
+      </Router>
+    </Provider>
+  );
 }
 
 export default App;
