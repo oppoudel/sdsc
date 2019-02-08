@@ -14,6 +14,7 @@
     "downshift": "^2.0.17",
     "emotion": "^10.0.7",
     "esri-loader": "^2.4.0",
+    "lodash.debounce": "^4.0.8",
     "match-sorter": "^2.2.3",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",

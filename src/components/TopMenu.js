@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Header, Menu } from "semantic-ui-react";
 import AppContext from "../AppContext";
 
-export default () => {
+export default function TopMenu() {
   const { logout, isAuthenticated } = useContext(AppContext);
   return (
     <Menu fixed="top">
@@ -30,4 +30,4 @@ export default () => {
       </Container>
     </Menu>
   );
-};
+}
